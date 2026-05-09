@@ -11,7 +11,7 @@
 #        export HOMEBREW_HADES_LICENSE_KEY="<paste from your portal email>"
 #      (HADES_LICENSE_KEY also accepted for parity with the runtime.)
 #   2. Tap and install:
-#        brew tap darkhorse-infosec/tap https://forgejo.darkhorseinfosec.com/DarkHorse/homebrew-tap
+#        brew tap DarkHorse-InfoSec/tap
 #        brew install hades-scanner
 #
 # Without HOMEBREW_HADES_LICENSE_KEY, the install fails with a clear message

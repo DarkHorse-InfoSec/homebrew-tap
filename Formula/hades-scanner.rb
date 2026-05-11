@@ -40,15 +40,15 @@ class HadesScanner < Formula
   desc "Enterprise metadata forensics and malware detection engine"
   homepage "https://darkhorseinfosec.com/hades.html"
   license :cannot_represent
-  version "1.4.2"
+  version "1.4.3"
 
   on_linux do
     on_intel do
-      url "https://portal.darkhorseinfosec.com/api/v1/download/linux-x86_64/v1.4.2/hades",
+      url "https://portal.darkhorseinfosec.com/api/v1/download/linux-x86_64/v1.4.3/hades",
           using: HadesPortalDownloadStrategy
       # sha256 from Nuitka build on VM 2026-05-02 23:37 UTC, duration ~5000s.
       # Binary size 1,328,477,290 bytes. Uploaded to R2 2026-05-03 03:06 UTC.
-      sha256 "f36e5ddd4ae1b42ac2ef5f3f4996907d346fa1dde95f871c5b53c0b57d27b770"  # pragma: allowlist secret
+      sha256 "b9da611962ae36c09eb5350841cc08e8b34d413481a291f08451166512fa960f"  # pragma: allowlist secret
     end
   end
 

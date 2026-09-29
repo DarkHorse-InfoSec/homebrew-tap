@@ -40,15 +40,42 @@ class HadesScanner < Formula
   desc "Enterprise metadata forensics and malware detection engine"
   homepage "https://darkhorseinfosec.com/hades.html"
   license :cannot_represent
-  version "1.4.3"
+  # Track the version the portal actually SERVES, not the newest one built.
+  # Bump this only in lockstep with the R2 upload plus the portal cutover.
+  #
+  # THIS FILE IS PUBLISHED IN TWO PLACES and customers only read the second:
+  #   1. Formula/hades-scanner.rb in the HADES repo (this copy, the source), and
+  #   2. github.com/DarkHorse-InfoSec/homebrew-tap, which `brew tap` installs.
+  # Copy this file to the tap verbatim on every bump. The tap served 1.4.3 from
+  # 2026-05-11 to 2026-09-29 because every "Homebrew cutover" in between
+  # (v1.5.x through v1.7.1) edited only copy 1.
+  #
+  # 2026-09-29: R2 s3://hades-releases/v1.7.2/ holds all 6 objects, verified
+  # by streaming the stored bytes back (4/4 MATCH) and by fetching each one
+  # through the REAL customer path and hashing the bytes that came back (4/4
+  # MATCH). The portal cutover to CURRENT_VERSION=v1.7.2 accompanies this bump,
+  # verified by reading the constant out of the RUNNING container and by
+  # asking the live portal what it tells an authenticated customer.
+  version "1.7.2"
 
   on_linux do
     on_intel do
-      url "https://portal.darkhorseinfosec.com/api/v1/download/linux-x86_64/v1.4.3/hades",
+      url "https://portal.darkhorseinfosec.com/api/v1/download/linux-x86_64/v1.7.2/hades",
           using: HadesPortalDownloadStrategy
-      # sha256 from Nuitka build on VM 2026-05-02 23:37 UTC, duration ~5000s.
-      # Binary size 1,328,477,290 bytes. Uploaded to R2 2026-05-03 03:06 UTC.
-      sha256 "b9da611962ae36c09eb5350841cc08e8b34d413481a291f08451166512fa960f"  # pragma: allowlist secret
+      # v1.7.2 Linux artifact (HADES commit a0a31cc). Size 1,347,232,268 bytes.
+      #
+      # This hash was NOT copied from a document. It was verified END TO END on
+      # 2026-09-29 by fetching this exact object through the real customer path
+      # (portal-signed URL -> dl.darkhorseinfosec.com -> Worker -> R2) and
+      # sha256'ing the bytes that came back: 1,347,232,268 B, MATCH.
+      # Evidence: dist/build_a0a31cc/customer_path_v172_run2.log (4/4 MATCH).
+      #
+      # Prior history, why that matters: the version string here was bumped
+      # release after release while the sha256 was carried forward untouched,
+      # so from v1.4.4 onward no tagged formula carried its own matching hash
+      # until v1.5.4 fixed it. Verify against the artifact when bumping. Do not
+      # carry forward.
+      sha256 "cafa1416f7157fda580c4f677b021fe68f4b2693abc32746bccda899d9c0e495"  # pragma: allowlist secret
     end
   end
 

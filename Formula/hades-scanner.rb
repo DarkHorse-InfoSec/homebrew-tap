@@ -50,32 +50,35 @@ class HadesScanner < Formula
   # 2026-05-11 to 2026-09-29 because every "Homebrew cutover" in between
   # (v1.5.x through v1.7.1) edited only copy 1.
   #
-  # 2026-09-29: R2 s3://hades-releases/v1.7.2/ holds all 6 objects, verified
+  # 2026-10-01: R2 s3://hades-releases/v1.7.3/ holds all 6 objects, verified
   # by streaming the stored bytes back (4/4 MATCH) and by fetching each one
   # through the REAL customer path and hashing the bytes that came back (4/4
-  # MATCH). The portal cutover to CURRENT_VERSION=v1.7.2 accompanies this bump,
+  # MATCH). The portal cutover to CURRENT_VERSION=v1.7.3 accompanies this bump,
   # verified by reading the constant out of the RUNNING container and by
-  # asking the live portal what it tells an authenticated customer.
-  version "1.7.2"
+  # asking the live portal what it tells an authenticated customer (latest ->
+  # v1.7.3 served byte-for-byte).
+  version "1.7.3"
 
   on_linux do
     on_intel do
-      url "https://portal.darkhorseinfosec.com/api/v1/download/linux-x86_64/v1.7.2/hades",
+      url "https://portal.darkhorseinfosec.com/api/v1/download/linux-x86_64/v1.7.3/hades",
           using: HadesPortalDownloadStrategy
-      # v1.7.2 Linux artifact (HADES commit a0a31cc). Size 1,347,232,268 bytes.
+      # v1.7.3 Linux artifact (HADES commit 7db18ee). Size 731,993,665 bytes.
       #
       # This hash was NOT copied from a document. It was verified END TO END on
-      # 2026-09-29 by fetching this exact object through the real customer path
+      # 2026-10-01 by fetching this exact object through the real customer path
       # (portal-signed URL -> dl.darkhorseinfosec.com -> Worker -> R2) and
-      # sha256'ing the bytes that came back: 1,347,232,268 B, MATCH.
-      # Evidence: dist/build_a0a31cc/customer_path_v172_run2.log (4/4 MATCH).
+      # sha256'ing the bytes that came back: 731,993,665 B, MATCH.
+      # Evidence: dist/build_ea6fde4/BUILD_RECORD_ea6fde4.md ("SHIP 2026-10-01").
+      # Size dropped from 1.7.2's 1,347,232,268 B because 1.7.3 excludes the
+      # pandas/pyarrow/psycopg2/pi_heif/pillow_heif/tkinter/openpyxl stack.
       #
       # Prior history, why that matters: the version string here was bumped
       # release after release while the sha256 was carried forward untouched,
       # so from v1.4.4 onward no tagged formula carried its own matching hash
       # until v1.5.4 fixed it. Verify against the artifact when bumping. Do not
       # carry forward.
-      sha256 "cafa1416f7157fda580c4f677b021fe68f4b2693abc32746bccda899d9c0e495"  # pragma: allowlist secret
+      sha256 "9f512e3fcb4cd18516a08e35933c33602076319a28c1ee05e9026a226d03cc51"  # pragma: allowlist secret
     end
   end
 

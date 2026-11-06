@@ -50,35 +50,35 @@ class HadesScanner < Formula
   # 2026-05-11 to 2026-09-29 because every "Homebrew cutover" in between
   # (v1.5.x through v1.7.1) edited only copy 1.
   #
-  # 2026-10-01: R2 s3://hades-releases/v1.7.3/ holds all 6 objects, verified
+  # 2026-11-06: R2 s3://hades-releases/v1.7.4/ holds all 6 objects, verified
   # by streaming the stored bytes back (4/4 MATCH) and by fetching each one
   # through the REAL customer path and hashing the bytes that came back (4/4
-  # MATCH). The portal cutover to CURRENT_VERSION=v1.7.3 accompanies this bump,
-  # verified by reading the constant out of the RUNNING container and by
-  # asking the live portal what it tells an authenticated customer (latest ->
-  # v1.7.3 served byte-for-byte).
-  version "1.7.3"
+  # MATCH at explicit v1.7.4, BEFORE the cutover). The portal cutover to
+  # CURRENT_VERSION=v1.7.4 accompanies this bump, verified by reading the
+  # constant out of the RUNNING container and by asking the live portal what it
+  # serves an authenticated customer (latest -> v1.7.4 byte-for-byte, 4/4).
+  version "1.7.4"
 
   on_linux do
     on_intel do
-      url "https://portal.darkhorseinfosec.com/api/v1/download/linux-x86_64/v1.7.3/hades",
+      url "https://portal.darkhorseinfosec.com/api/v1/download/linux-x86_64/v1.7.4/hades",
           using: HadesPortalDownloadStrategy
-      # v1.7.3 Linux artifact (HADES commit 7db18ee). Size 731,993,665 bytes.
+      # v1.7.4 Linux artifact (HADES commit 5f34768). Size 760,682,632 bytes.
       #
       # This hash was NOT copied from a document. It was verified END TO END on
-      # 2026-10-01 by fetching this exact object through the real customer path
+      # 2026-11-06 by fetching this exact object through the real customer path
       # (portal-signed URL -> dl.darkhorseinfosec.com -> Worker -> R2) and
-      # sha256'ing the bytes that came back: 731,993,665 B, MATCH.
-      # Evidence: dist/build_ea6fde4/BUILD_RECORD_ea6fde4.md ("SHIP 2026-10-01").
-      # Size dropped from 1.7.2's 1,347,232,268 B because 1.7.3 excludes the
-      # pandas/pyarrow/psycopg2/pi_heif/pillow_heif/tkinter/openpyxl stack.
+      # sha256'ing the bytes that came back: MATCH, for both v1.7.4 and latest.
+      # Evidence: dist/build_5f34768/BUILD_RECORD_5f34768.md.
+      # Size is up 28.7 MB from 1.7.3's 731,993,665 B: the Pillow 13 / dependency
+      # floor upgrades and the dashboard now bundled into the binary.
       #
       # Prior history, why that matters: the version string here was bumped
       # release after release while the sha256 was carried forward untouched,
       # so from v1.4.4 onward no tagged formula carried its own matching hash
       # until v1.5.4 fixed it. Verify against the artifact when bumping. Do not
       # carry forward.
-      sha256 "9f512e3fcb4cd18516a08e35933c33602076319a28c1ee05e9026a226d03cc51"  # pragma: allowlist secret
+      sha256 "1755d2b0f928d4dbefab467b19cb88e1690a5c0efc6e2606ef6e43ad0bba68d8"  # pragma: allowlist secret
     end
   end
 
